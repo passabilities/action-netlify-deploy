@@ -9,30 +9,23 @@ npm i -g netlify-cli
 NETLIFY_CLI=$(which netlify)
 
 # Install node from NVM to honor .nvmrc files
-if [[ -n $9 ]] || [[ -e ".nvmrc" ]]
+if [[ -n $INPUT_NODE_VERSION ]] || [[ -e ".nvmrc" ]]
 then
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 	[ -s "$HOME/.nvm/nvm.sh" ] && \. "$HOME/.nvm/nvm.sh"
 
-	if [[ -n $9 ]]
+	if [[ -n $INPUT_NODE_VERSION ]]
 	then
-		nvm install "$9"
+		nvm install "$INPUT_NODE_VERSION"
 	else
 		nvm install
 	fi
 fi
 
-NETLIFY_AUTH_TOKEN=$1
-NETLIFY_SITE_ID=$2
-NETLIFY_DEPLOY_TO_PROD=$3
-INSTALL_COMMAND=$4
-BUILD_COMMAND=$5
-DEPLOY_ALIAS=$6
-
 # Install dependencies
-if [[ -n $INSTALL_COMMAND ]]
+if [[ -n $INPUT_INSTALL_COMMAND ]]
 then
-	eval $INSTALL_COMMAND
+	eval $INPUT_INSTALL_COMMAND
 elif [[ -f yarn.lock ]]
 then
 	yarn
@@ -41,20 +34,20 @@ else
 fi
 
 # Export token to use with netlify's cli
-export NETLIFY_SITE_ID="$NETLIFY_SITE_ID"
-export NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN"
+export NETLIFY_SITE_ID="$INPUT_NETLIFY_SITE_ID"
+export NETLIFY_AUTH_TOKEN="$INPUT_NETLIFY_AUTH_TOKEN"
 
 # Build project
-eval ${BUILD_COMMAND:-"npm run build"}
+eval ${INPUT_BUILD_COMMAND:-"npm run build"}
 
 COMMAND="$NETLIFY_CLI deploy --message=\"$INPUT_NETLIFY_DEPLOY_MESSAGE\""
 
-if [[ $NETLIFY_DEPLOY_TO_PROD == "true" ]]
+if [[ $INPUT_NETLIFY_DEPLOY_TO_PROD == "true" ]]
 then
 	COMMAND+=" --prod"
-elif [[ -n $DEPLOY_ALIAS ]]
+elif [[ -n $INPUT_DEPLOY_ALIAS ]]
 then
-	COMMAND+=" --alias $DEPLOY_ALIAS"
+	COMMAND+=" --alias $INPUT_DEPLOY_ALIAS"
 fi
 
 # Deploy with netlify
