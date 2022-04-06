@@ -60,8 +60,6 @@ runs:
     - ${{ inputs.NETLIFY_AUTH_TOKEN }}
     - ${{ inputs.NETLIFY_SITE_ID }}
     - ${{ inputs.NETLIFY_DEPLOY_TO_PROD }}
-    - ${{ inputs.build_directory }}
-    - ${{ inputs.functions_directory }}
     - ${{ inputs.install_command }}
     - ${{ inputs.build_command }}
     - ${{ inputs.deploy_alias }}
