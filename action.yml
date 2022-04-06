@@ -23,16 +23,6 @@ inputs:
     required: false
     default: ''
 
-  build_directory:
-    description: 'Directory where built files are stored'
-    required: true
-    default: 'build'
-
-  functions_directory:
-    description: 'Directory where built files are stored'
-    required: false
-    default: ''
-
   install_command:
     description: 'Command to install dependencies'
     required: false
